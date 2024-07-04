@@ -28,7 +28,7 @@ Clone git@github.com:mobinghanbari/library-management.git
 ```
 
 ```
-cd book_management
+cd library-management
 ```
 
 2. Create a virtualenv
