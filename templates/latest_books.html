@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Latest Books</title>
+</head>
+<body>
+    <h1>Latest Books</h1>
+    <ul>
+        {% for book in books %}
+        <li>
+            <h2>{{ book.title }}</h2>
+            <p>Published at: {{ book.published_at }}</p>
+            <p>Quantity: {{ book.quantity }}</p>
+            <h3>Images</h3>
+            <ul>
+                {% for image in book.images %}
+                <li>
+                    <img src="{{ image.image_url }}" alt="Book Image" style="max-width: 200px;">
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
