@@ -17,7 +17,7 @@ def fetch_books(
     if role not in ["admin", "manager"]:
         raise HTTPException(
             status_code=403,
-            detail="Only admin or manager or  members can see the report"
+            detail="Only admin or manager can see the report"
         )
 
     # Start with querying the Book model
