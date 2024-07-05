@@ -17,6 +17,7 @@ from .schema.output_schema import UserOu
 from .utils import create_reset_password_token, validate_token
 from cache.connection import redis_client
 from dependency.dependency import verify_ip
+from datetime import timedelta
 
 user_app = APIRouter(prefix="/users", tags=["User"])
 
@@ -61,6 +62,10 @@ async def request_login(
     return {"message": f"Verification code for {user.email}: {verification_code}"}
 
 
+# Define the token expiry duration
+TOKEN_EXPIRE_MINUTES = 30
+token_expires = timedelta(minutes=TOKEN_EXPIRE_MINUTES)
+
 @user_app.post("/verify-code", dependencies=[Depends(RateLimiter(times=5, seconds=60))])
 async def verify_code_endpoint(
         request: Request,
@@ -80,9 +85,11 @@ async def verify_code_endpoint(
     client_ip = request.client.host
     role_name = user.role.slug
     access_token = create_access_token(
-        data={"sub": user.email, "user_id": user.id, "scope": role_name, "ip": client_ip})
+        data={"sub": user.email, "user_id": user.id, "scope": role_name, "ip": client_ip},
+        expires_delta=token_expires
+    )
 
-    redis_client.set(f"{user.username}_token", access_token, ex=1800)
+    redis_client.set(f"{user.username}_token", access_token, ex=TOKEN_EXPIRE_MINUTES * 60)
 
     return {
         'access_token': access_token,
