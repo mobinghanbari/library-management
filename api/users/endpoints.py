@@ -97,7 +97,7 @@ def get_specific_user(db: Session, username):
 
 
 def update(db: Session, pk: int, role: str, ip_check: UpdateUser):
-    if role != "admin":
+    if role not in ["admin"]:
         raise HTTPException(
             status_code=403,
             detail="Only admin members can update user info"
