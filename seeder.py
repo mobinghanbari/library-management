@@ -93,7 +93,7 @@ def seed_database():
         book = Book(
             title=title,
             author_id=random.choice(authors).id,
-            category_id=random.choice(parent_categories).id,  # انتخاب یک دسته‌بندی والد یا فرزند به صورت تصادفی
+            category_id=random.choice(parent_categories).id, 
             stock=fake.boolean(),
             quantity=fake.random_int(min=1, max=10),
             published_at=fake.date_this_century()
